@@ -9,5 +9,6 @@ On-line HTML format: http://dunkels.com/adam/pt/pt-1.4-refman/
 Printout PDF format: http://dunkels.com/adam/download/pt-1.4-refman.pdf
 
 Protothread.h - https://github.com/benhoyt/protothreads-cpp/blob/master/Protothread.h
+One more lib - https://github.com/zserge/pt
 
 Example - https://people.ece.cornell.edu/land/courses/ece4760/PIC32/ProtoThreads/Semaphore_command_DMA_ms_us.c
