@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "pt.h"
+//
 #include "pt-sem.h"
 
 
@@ -36,7 +38,7 @@
 
 
 // #define PTPP_BEGIN()                          PT_BEGIN(&(this->ptContext))
-#define PTPP_BEGIN(pt)                        { char PT_YIELD_FLAG = 1; (void)PT_YIELD_FLAG; LC_RESUME((&(this->ptContext))->lc)
+#define PTPP_BEGIN()                          { char PT_YIELD_FLAG = 1; (void)PT_YIELD_FLAG; LC_RESUME((&(this->ptContext))->lc)
 
 #if 0
 #define PTPP_END(code)                        do                               \
@@ -94,7 +96,7 @@
 namespace protothreads
 {
 
-using PtContext = struct pt;
+using PtContext = struct ::pt;
 
 
 struct ThreadBase
