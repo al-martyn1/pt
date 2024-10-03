@@ -83,6 +83,7 @@
 
 #define PTPP_YIELD()                          PT_YIELD(&(this->ptContext))
 #define PTPP_YIELD_UNTIL(cond)                PT_YIELD_UNTIL(&(this->ptContext), cond)
+#define PTPP_YIELD_WHILE(cond)                PTPP_YIELD_UNTIL(!(cond))
 
 /////
 
@@ -105,6 +106,19 @@ protected:
     mutable int       exitCode = 0;
 
 public:
+
+    static const char* getResultCodeName(int code)
+    {
+        switch(code)
+        {
+            case PT_WAITING: return "PT_WAITING";
+            case PT_YIELDED: return "PT_YIELDED";
+            case PT_EXITED : return "PT_EXITED" ;
+            case PT_ENDED  : return "PT_ENDED"  ;
+            default        : return "<UNKNOWN>"  ;
+        };
+    }
+
 
     int getExitCode() { return exitCode; }
 
