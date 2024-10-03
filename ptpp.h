@@ -13,12 +13,14 @@
 #define PTPP_ENDED      PT_ENDED     /* PT_ENDED */
 
 
-#define PTPP_IS_EXITED(code)           ((code)==PT_EXITED)
-#define PTPP_IS_ENDED(code)            ((code)==PT_ENDED)
-#define PTPP_IS_EXITED_OR_ENDED(code)  ((code)==PT_EXITED || (code)==PT_ENDED)
+#define PTPP_IS_WAITING(code)                 ((code)==PT_WAITING)
+#define PTPP_IS_YIELDED(code)                 ((code)==PT_YIELDED)
+#define PTPP_IS_EXITED(code)                  ((code)==PT_EXITED)
+#define PTPP_IS_ENDED(code)                   ((code)==PT_ENDED)
+#define PTPP_IS_EXITED_OR_ENDED(code)         ((code)==PT_EXITED || (code)==PT_ENDED)
 
 
-#define PTPP_INIT()   PTPP_INIT(this->ptContext)
+#define PTPP_INIT()                           PT_INIT(&(this->ptContext))
 
 
 // #define PT_THREAD(name_args) char name_args
@@ -33,30 +35,39 @@
 
 
 
-#define PTPP_BEGIN()                          PT_BEGIN(this->ptContext)
+// #define PTPP_BEGIN()                          PT_BEGIN(&(this->ptContext))
+#define PTPP_BEGIN(pt)                        { char PT_YIELD_FLAG = 1; (void)PT_YIELD_FLAG; LC_RESUME((&(this->ptContext))->lc)
 
-#define PTPP_END(code)                        do                            \
-                                              {                             \
-                                                  this->exitCode = code;    \
-                                                  PT_END(this->ptContext);  \
+#if 0
+#define PTPP_END(code)                        do                               \
+                                              {                                \
+                                                  this->exitCode = code;       \
+                                                  PT_END(&(this->ptContext));  \
                                               } while(0)
+#endif
+
+#define PTPP_END(code)                        this->exitCode = code;                               \
+                                              LC_END((&(this->ptContext))->lc); PT_YIELD_FLAG = 0; \
+                                              PT_INIT(&(this->ptContext)); return PT_ENDED;  }
+
+
 
 
 /* Блокирует тред, пока условие не выполняется */
-#define PTPP_WAIT_UNTIL(condition)            PT_WAIT_UNTIL(this->ptContext, condition)
+#define PTPP_WAIT_UNTIL(condition)            PT_WAIT_UNTIL(&(this->ptContext), condition)
 
 /* Блокирует тред, пока условие выполняется */
-#define PTPP_WAIT_WHILE(cond)                 PT_WAIT_WHILE(this->ptContext, cond)
+#define PTPP_WAIT_WHILE(cond)                 PT_WAIT_WHILE(&(this->ptContext), cond)
 
 // #define PT_WAIT_THREAD(pt, thread)
 //#define PT_SPAWN(pt, child, thread)
 
-#define PTPP_RESTART()                        PT_RESTART(this->ptContext)
+#define PTPP_RESTART()                        PT_RESTART(&(this->ptContext))
 
-#define PTPP_EXIT(code)                       do                            \
-                                              {                             \
-                                                  this->exitCode = code;    \
-                                                  PT_EXIT(this->ptContext); \
+#define PTPP_EXIT(code)                       do                               \
+                                              {                                \
+                                                  this->exitCode = code;       \
+                                                  PT_EXIT(&(this->ptContext)); \
                                               } while(0)
 
 #if 0
@@ -64,14 +75,14 @@
 
 #define PTPP_EXIT(code)                       do {                       \
                                                 this->exitCode = code;   \
-                                                PT_EXIT(this->ptContext);\
+                                                PT_EXIT(&(this->ptContext));\
                                               } while(0)
 #endif
 
 // #define PT_SCHEDULE(f)
 
-#define PTPP_YIELD()                          PT_YIELD(this->ptContext)
-#define PTPP_YIELD_UNTIL(cond)                PT_YIELD_UNTIL(this->ptContext, cond)
+#define PTPP_YIELD()                          PT_YIELD(&(this->ptContext))
+#define PTPP_YIELD_UNTIL(cond)                PT_YIELD_UNTIL(&(this->ptContext), cond)
 
 /////
 
