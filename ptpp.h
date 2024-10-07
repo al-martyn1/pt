@@ -96,7 +96,14 @@
 namespace protothreads
 {
 
-using PtContext = struct ::pt;
+using PtContext = /*struct*/ ::pt;
+
+
+inline bool pptpIsResultWaiting(int code)       { return PTPP_IS_WAITING(code); }
+inline bool pptpIsResultYielded(int code)       { return PTPP_IS_YIELDED(code); }
+inline bool pptpIsResultExited(int code)        { return PTPP_IS_EXITED(code);  }
+inline bool pptpIsResultEnded(int code)         { return PTPP_IS_ENDED(code);   }
+inline bool pptpIsResultExitedOrEnded(int code) { return PTPP_IS_EXITED_OR_ENDED(code); }
 
 
 struct ThreadBase
@@ -121,8 +128,20 @@ public:
         };
     }
 
+    static bool isResultWaiting(int code)       { return PTPP_IS_WAITING(code); }
+    static bool isResultYielded(int code)       { return PTPP_IS_YIELDED(code); }
+    static bool isResultExited(int code)        { return PTPP_IS_EXITED(code);  }
+    static bool isResultEnded(int code)         { return PTPP_IS_ENDED(code);   }
+    static bool isResultExitedOrEnded(int code) { return PTPP_IS_EXITED_OR_ENDED(code); }
 
-    int getExitCode() { return exitCode; }
+    int getExitCode() const { return exitCode; }
+
+// #define PTPP_IS_WAITING(code)                 ((code)==PT_WAITING)
+// #define PTPP_IS_YIELDED(code)                 ((code)==PT_YIELDED)
+// #define PTPP_IS_EXITED(code)                  ((code)==PT_EXITED)
+// #define PTPP_IS_ENDED(code)                   ((code)==PT_ENDED)
+// #define PTPP_IS_EXITED_OR_ENDED(code)         ((code)==PT_EXITED || (code)==PT_ENDED)
+
 
     ThreadBase()
     {
