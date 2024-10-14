@@ -105,6 +105,13 @@ inline bool pptpIsResultExited(int code)        { return PTPP_IS_EXITED(code);  
 inline bool pptpIsResultEnded(int code)         { return PTPP_IS_ENDED(code);   }
 inline bool pptpIsResultExitedOrEnded(int code) { return PTPP_IS_EXITED_OR_ENDED(code); }
 
+inline bool pptpIsThreadWaiting(int code)       { return PTPP_IS_WAITING(code); }
+inline bool pptpIsThreadYielded(int code)       { return PTPP_IS_YIELDED(code); }
+inline bool pptpIsThreadExited(int code)        { return PTPP_IS_EXITED(code);  }
+inline bool pptpIsThreadEnded(int code)         { return PTPP_IS_ENDED(code);   }
+inline bool pptpIsThreadExitedOrEnded(int code) { return PTPP_IS_EXITED_OR_ENDED(code); }
+
+
 
 struct ThreadBase
 {
